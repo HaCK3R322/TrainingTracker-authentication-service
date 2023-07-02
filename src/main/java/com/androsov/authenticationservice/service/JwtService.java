@@ -3,6 +3,7 @@ package com.androsov.authenticationservice.service;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -10,7 +11,8 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private final String secret = "This is secret signature!";
+    @Value("%{jwt.secret}")
+    private String secret;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     private final String USERNAME = "username";
