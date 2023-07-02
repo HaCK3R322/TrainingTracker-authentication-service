@@ -5,7 +5,6 @@ import com.androsov.authenticationservice.exceptions.UsernameAlreadyInUse;
 import com.androsov.authenticationservice.exceptions.UsernameNotFoundException;
 import com.androsov.authenticationservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
