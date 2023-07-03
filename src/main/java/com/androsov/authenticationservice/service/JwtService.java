@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class JwtService {
-    @Value("%{jwt.secret}")
+    @Value("${jwt.secret}")
     private String secret;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
