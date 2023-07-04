@@ -1,15 +1,16 @@
 package com.androsov.authenticationservice.service;
 
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -39,5 +40,22 @@ public class JwtService {
         }
 
         return true;
+    }
+
+    public String getUsername(String jwtToken) {
+
+        Jws<Claims> jwt = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(jwtToken);
+
+        return (String)(jwt.getBody()).get("username");
+    }
+
+    public String getAuthorities(String jwtToken) {
+        Jws<Claims> jwt = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(jwtToken);
+
+        return (String)(jwt.getBody()).get("authorities");
     }
 }

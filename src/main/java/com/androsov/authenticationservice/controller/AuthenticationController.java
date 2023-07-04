@@ -1,9 +1,6 @@
 package com.androsov.authenticationservice.controller;
 
-import com.androsov.authenticationservice.dto.AuthenticationRequest;
-import com.androsov.authenticationservice.dto.ExceptionResponse;
-import com.androsov.authenticationservice.dto.JwtTokenValidationRequest;
-import com.androsov.authenticationservice.dto.RegistrationRequest;
+import com.androsov.authenticationservice.dto.*;
 import com.androsov.authenticationservice.entity.User;
 import com.androsov.authenticationservice.exceptions.PasswordDoesntMatches;
 import com.androsov.authenticationservice.exceptions.UsernameAlreadyInUse;
@@ -12,6 +9,7 @@ import com.androsov.authenticationservice.service.JwtService;
 import com.androsov.authenticationservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -64,11 +62,21 @@ public class AuthenticationController {
 
     @PostMapping(path = "/validate")
     @ResponseStatus(HttpStatus.OK)
-    public String validate(@RequestBody JwtTokenValidationRequest request) {
+    public String validate(@RequestBody JwtToken request) {
         if(jwtService.isValid(request.getToken())) {
             return "ok";
         } else {
             return "not valid";
         }
+    }
+
+    @PostMapping(path = "/parse")
+    public ResponseEntity<UsernameAuthoritiesResponse> parse(@RequestBody JwtToken request) {
+        UsernameAuthoritiesResponse response = new UsernameAuthoritiesResponse(
+                jwtService.getUsername(request.getToken()),
+                jwtService.getAuthorities(request.getToken())
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

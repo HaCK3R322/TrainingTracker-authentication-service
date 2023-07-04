@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtTokenValidationRequest {
+public class JwtToken {
     public String token;
 }
