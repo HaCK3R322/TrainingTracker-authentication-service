@@ -72,10 +72,13 @@ public class AuthenticationController {
 
     @PostMapping(path = "/parse")
     public ResponseEntity<UsernameAuthoritiesResponse> parse(@RequestBody JwtToken request) {
-        UsernameAuthoritiesResponse response = new UsernameAuthoritiesResponse(
-                jwtService.getUsername(request.getToken()),
-                jwtService.getAuthorities(request.getToken())
-        );
+        String username = jwtService.getUsername(request.getToken());
+        String authorities = jwtService.getAuthorities(request.getToken());
+
+        UsernameAuthoritiesResponse response = new UsernameAuthoritiesResponse();
+        response.setId(userService.loadFromDatabase(username).getId());
+        response.setUsername(username);
+        response.setAuthorities(authorities);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
