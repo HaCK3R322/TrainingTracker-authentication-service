@@ -9,12 +9,11 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret}")
-    private String secret;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
     private final String USERNAME = "username";
     private final String AUTHORITIES = "authorities";
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateToken(String username, String authorities) {
         Map<String, Object> claims = new HashMap<>();
@@ -43,7 +42,7 @@ public class JwtService {
                 .setSigningKey(secret)
                 .parseClaimsJws(jwtToken);
 
-        return (String)(jwt.getBody()).get("username");
+        return (String) (jwt.getBody()).get("username");
     }
 
     public String getAuthorities(String jwtToken) {
@@ -51,6 +50,6 @@ public class JwtService {
                 .setSigningKey(secret)
                 .parseClaimsJws(jwtToken);
 
-        return (String)(jwt.getBody()).get("authorities");
+        return (String) (jwt.getBody()).get("authorities");
     }
 }

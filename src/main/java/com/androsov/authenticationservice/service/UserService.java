@@ -13,12 +13,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     PasswordEncoder encoder;
+    @Autowired
+    private UserRepository userRepository;
 
     public User saveToDatabase(User user) throws UsernameAlreadyInUse {
-        if(userRepository.existsByUsername(user.getUsername()))
+        if (userRepository.existsByUsername(user.getUsername()))
             throw new UsernameAlreadyInUse("Username " + user.getUsername() + " already exists");
 
         user.setPassword(encoder.encode(user.getPassword()));
@@ -29,7 +29,7 @@ public class UserService {
     public User loadFromDatabase(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
-        if(userOptional.isEmpty())
+        if (userOptional.isEmpty())
             throw new UsernameNotFoundException("User with username " + username + " not found!");
 
         return userOptional.get();

@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthenticationController {
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JwtService jwtService;
+
     @ExceptionHandler({
             UsernameAlreadyInUse.class,
             UsernameNotFoundException.class,
@@ -24,11 +29,6 @@ public class AuthenticationController {
     public ExceptionResponse handleUserExceptions(Exception ex) {
         return new ExceptionResponse(ex.getMessage());
     }
-
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtService jwtService;
 
     // register
     @PostMapping(path = "/register")
@@ -49,7 +49,7 @@ public class AuthenticationController {
     @PostMapping(path = "/authenticate")
     @ResponseStatus(HttpStatus.OK)
     public String authenticate(@RequestBody AuthenticationRequest request) {
-        if(userService.isPasswordCorrect(request.getUsername(), request.getPassword())) {
+        if (userService.isPasswordCorrect(request.getUsername(), request.getPassword())) {
 
             User user = userService.loadFromDatabase(request.getUsername());
 
@@ -63,7 +63,7 @@ public class AuthenticationController {
     @PostMapping(path = "/validate")
     @ResponseStatus(HttpStatus.OK)
     public String validate(@RequestBody JwtToken request) {
-        if(jwtService.isValid(request.getToken())) {
+        if (jwtService.isValid(request.getToken())) {
             return "ok";
         } else {
             return "not valid";
